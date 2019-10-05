@@ -8,7 +8,7 @@ from collections import namedtuple
 from data_tools import plot_functions as func
 
 # maybe we can use namedtuples to store data about the nodes?
-Node = ('Node', 'weight_degree average_trust')
+Node = namedtuple('Node', 'node_id d_in_wn d_out_wn d_in_wy d_out_wy avg_in avg_out' )
 
 if __name__ == '__main__':
     # read file
@@ -81,26 +81,32 @@ if __name__ == '__main__':
     # create data frame
     to_data_frame = list()
     for i in range(len(in_not_weight)):
-        to_data_frame.append(
-            (in_not_weight[i][0], in_not_weight[i][1], out_not_weight[i][1], in_weight[i][1], out_weight[i][1]))
+        to_data_frame.append(Node(node_id = in_not_weight[i][0],
+                                  d_in_wn = in_not_weight[i][1],
+                                  d_out_wn = out_not_weight[i][1],
+                                  d_in_wy = in_weight[i][1],
+                                  d_out_wy = out_weight[i][1],
+                                  avg_in = in_weight[i][2],
+                                  avg_out = out_weight[i][2]))
 
     # d -degree
     # in/out -in or out edge
-    # w_y / w_n - weight yes, weight no(weight represents trust rating)
-    # each instance in data frame represents: node, d_in_nw, d_out_nw, d_in_wy, d_out_wy
+    # wy / wn - weight yes, weight no(weight represents trust rating)
+    # avg_in / avg_out - average of rate of received / given rates
+    # each instance in data frame represents: node, d_in_nw, d_out_nw, d_in_wy, d_out_wy, avg_in, avg_out
     print("\n", to_data_frame[0])
 
-    data_frame = pd.DataFrame(to_data_frame, columns=('node', 'd_in_nw', 'd_out_nw', 'd_in_wy', 'd_out_wy'))
+    data_frame = pd.DataFrame(to_data_frame, columns=('node', 'd_in_wn', 'd_out_wn', 'd_in_wy', 'd_out_wy', 'avg_in', 'avg_out'))
 
     # print plots
 
-    # print("\n", data_frame.describe(include='all'))
-    # func.singular_boxplot(data_frame)
-    # func.hist_each_numeric_var(data_frame)
-    # # func.hist_categorical_var(sub_data, 'float64')
-    # func.display_best_fit_var(data_frame)
-    # func.fit_different_distributions(data_frame)
-    # func.granularity(data_frame)
-    # func.sparsity(data_frame)
-    # func.correlation_analysis(data_frame)
+    print("\n", data_frame.describe(include='all'))
+    func.singular_boxplot(data_frame)
+    func.hist_each_numeric_var(data_frame)
+    # func.hist_categorical_var(sub_data, 'float64')
+    func.display_best_fit_var(data_frame)
+    func.fit_different_distributions(data_frame)
+    func.granularity(data_frame)
+    func.sparsity(data_frame)
+    func.correlation_analysis(data_frame)
 
