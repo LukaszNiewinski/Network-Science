@@ -4,8 +4,11 @@ import matplotlib as mpl
 import pandas as pd
 import collections
 from pandas.plotting import register_matplotlib_converters
+from collections import namedtuple
 from data_tools import plot_functions as func
 
+# maybe we can use namedtuples to store data about the nodes?
+Node = ('Node', 'weight_degree average_trust')
 
 if __name__ == '__main__':
     # read file
@@ -36,18 +39,28 @@ if __name__ == '__main__':
     weighted_in_degree = dict()
     weighted_out_degree = dict()
     for instance in data.values:
-        weighted_in_degree[instance[0]] = weighted_in_degree.get(instance[0], 0) + instance[2]
-        weighted_in_degree[instance[1]] = weighted_in_degree.get(instance[1], 0)
-        weighted_out_degree[instance[1]] = weighted_out_degree.get(instance[1], 0) + instance[2]
-        weighted_out_degree[instance[0]] = weighted_out_degree.get(instance[0], 0)
+        weighted_in_degree[instance[1]] = weighted_in_degree.get(instance[1], 0) + instance[2]
+        weighted_in_degree[instance[0]] = weighted_in_degree.get(instance[0], 0)
+        weighted_out_degree[instance[0]] = weighted_out_degree.get(instance[0], 0) + instance[2]
+        weighted_out_degree[instance[1]] = weighted_out_degree.get(instance[1], 0)
+
+
     in_degree_list_weight = list()
 
     for key, value in weighted_in_degree.items():
-        in_degree_list_weight.append((int(key), value / n_nodes))
+        #third value is average value of ratings that node received from other nodes
+        if graph.in_degree[key] != 0:
+            in_degree_list_weight.append((int(key), value / n_nodes, value / graph.in_degree[key]))
+        else:
+            in_degree_list_weight.append((int(key), value / n_nodes, 0))
 
     out_degree_list_weight = list()
     for key, value in weighted_out_degree.items():
-        out_degree_list_weight.append((int(key), value / n_nodes))
+        #third value is average value of ratings that node gave to other nodes
+        if graph.out_degree[key] != 0:
+            out_degree_list_weight.append((int(key), value / n_nodes, value / graph.out_degree[key]))
+        else:
+            out_degree_list_weight.append((int(key), value / n_nodes, 0))
 
     in_degree_list_weight = sorted(in_degree_list_weight, key=lambda tup: tup[1], reverse=True)
     out_degree_list_weight = sorted(out_degree_list_weight, key=lambda tup: tup[1], reverse=True)
@@ -56,7 +69,7 @@ if __name__ == '__main__':
     for i in range(20):
         print("IN Node:\033[1m", in_degree_list_weight[i][0], "\033[0m\tdegree:\033[1m", out_degree_list_weight[i][1],
               "\033[0m\tOUT Node:\033[1m", out_degree_list[i][0], "\033[0m\tdegree:\033[1m", out_degree_list[i][1],
-              "\033[0m")
+              "\033[0m", "avg_in\033[1m", in_degree_list_weight[i][2], "\t\033[0mavg_out\033[1m", out_degree_list_weight[i][2], "\033[0m")
 
 
     # prepare lists to create dataframe, each index in each lists must represent same node
@@ -81,13 +94,13 @@ if __name__ == '__main__':
 
     # print plots
 
-    print("\n", data_frame.describe(include='all'))
-    func.singular_boxplot(data_frame)
-    func.hist_each_numeric_var(data_frame)
-    # func.hist_categorical_var(sub_data, 'float64')
-    func.display_best_fit_var(data_frame)
-    func.fit_different_distributions(data_frame)
-    func.granularity(data_frame)
-    func.sparsity(data_frame)
-    func.correlation_analysis(data_frame)
+    # print("\n", data_frame.describe(include='all'))
+    # func.singular_boxplot(data_frame)
+    # func.hist_each_numeric_var(data_frame)
+    # # func.hist_categorical_var(sub_data, 'float64')
+    # func.display_best_fit_var(data_frame)
+    # func.fit_different_distributions(data_frame)
+    # func.granularity(data_frame)
+    # func.sparsity(data_frame)
+    # func.correlation_analysis(data_frame)
 

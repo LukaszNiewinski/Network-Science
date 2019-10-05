@@ -86,7 +86,7 @@ def display_best_fit_var(data):
     for n in range(len(columns)):
         axs[i, j].set_title('Histogram with trend for %s' % columns[n])
         axs[i, j].set_ylabel("probability")
-        #axs[i, j].set_yscale('log')
+        axs[i, j].set_yscale('log')
         sns.distplot(data[columns[n]].dropna().values, norm_hist=True, ax=axs[i, j], axlabel=columns[n])
         i, j = (i + 1, 0) if (n + 1) % cols == 0 else (i, j + 1)
     fig.tight_layout()
