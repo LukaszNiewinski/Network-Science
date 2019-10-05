@@ -130,7 +130,7 @@ def histogram_with_distributions(ax: plt.Axes, series: pd.Series, var: str):
     multiple_line_chart(ax, values, distributions, 'Best fit for %s' % var, var, 'probability')
 
 def multiple_line_chart(ax: plt.Axes, xvalues: list, yvalues: dict, title: str, xlabel: str, ylabel: str, percentage=False):
-    legend: list = []
+    legend = []
     ax.set_title(title)
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
