@@ -42,6 +42,7 @@ def bar_chart(ax: plt.axes, xvalues: list, yvalues: list, title: str, xlabel: st
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
     ax.set_yscale('log')
+    ax.set_xscale('log')
     ax.set_xticklabels(xvalues, rotation=90, fontsize='small')
     if percentage:
         ax.set_ylim(0.0, 1.0)
@@ -58,6 +59,7 @@ def hist_each_numeric_var(data):
         axs[i, j].set_xlabel(columns[n])
         axs[i, j].set_ylabel("probability")
         axs[i, j].set_yscale('log')
+        axs[i, j].set_xscale('log')
         axs[i, j].hist(data[columns[n]].dropna().values, 'auto')
         i, j = (i + 1, 0) if (n + 1) % cols == 0 else (i, j + 1)
     fig.tight_layout()
@@ -87,6 +89,7 @@ def display_best_fit_var(data):
         axs[i, j].set_title('Histogram with trend for %s' % columns[n])
         axs[i, j].set_ylabel("probability")
         axs[i, j].set_yscale('log')
+        axs[i, j].set_xscale('log')
         sns.distplot(data[columns[n]].dropna().values, norm_hist=True, ax=axs[i, j], axlabel=columns[n])
         i, j = (i + 1, 0) if (n + 1) % cols == 0 else (i, j + 1)
     fig.tight_layout()
@@ -135,6 +138,7 @@ def multiple_line_chart(ax: plt.Axes, xvalues: list, yvalues: dict, title: str, 
     ax.set_xlabel(xlabel)
     ax.set_ylabel(ylabel)
     ax.set_yscale('log')
+    ax.set_xscale('log')
     if percentage:
         ax.set_ylim(0.0, 1.0)
 
@@ -156,6 +160,7 @@ def granularity(data):
             axs[i, j].set_xlabel(columns[i])
             axs[i, j].set_ylabel("probability")
             axs[i, j].set_yscale('log')
+            #axs[i, j].set_xscale('log')
             axs[i, j].hist(data[columns[i]].dropna().values, bins[j])
     fig.tight_layout()
 
