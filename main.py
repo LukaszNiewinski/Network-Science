@@ -40,11 +40,55 @@ if __name__ == '__main__':
     weighted_out_degree = dict()
     for instance in data.values:
         weighted_in_degree[instance[1]] = weighted_in_degree.get(instance[1], 0) + instance[2]
-        weighted_in_degree[instance[0]] = weighted_in_degree.get(instance[0], 0)
+        #weighted_in_degree[instance[0]] = weighted_in_degree.get(instance[0], 0)
         weighted_out_degree[instance[0]] = weighted_out_degree.get(instance[0], 0) + instance[2]
-        weighted_out_degree[instance[1]] = weighted_out_degree.get(instance[1], 0)
+        #weighted_out_degree[instance[1]] = weighted_out_degree.get(instance[1], 0)
 
 
+    # COUNT NUMBERS OF NODES WITH ONLY IN EDGES, COUNT OF ITS SUM
+    sum_just_in = 0
+    sum_just_out = 0
+    avg_just_in = 0
+    avg_just_out = 0
+    i = 0
+    number_of_edges = list()
+    just_in_nodes = dict()
+    just_out_nodes = dict()
+
+    for key, value in weighted_in_degree.items():
+        if key not in weighted_out_degree:
+            just_in_nodes[key] = value
+
+            number_of_edges.append(graph.in_degree[key])
+            i += 1
+            sum_just_in += value
+            avg_just_in += value / graph.in_degree[key]
+
+    print("average number of incoming ratings",sum(number_of_edges)/len(number_of_edges))
+    print("quantity of nodes with just in edges:", i)
+    print("average rating of just in rated nodes:", avg_just_in / i)
+
+    # COUNT NUMBERS OF NODES WITH ONLY OUT EDGES, COUNT OF ITS SUM
+    i = 0
+    number_of_edges = list()
+    for key, value in weighted_out_degree.items():
+        if key not in weighted_in_degree:
+            just_out_nodes[key] = value
+            i += 1
+            sum_just_out += value
+            avg_just_out += value / graph.out_degree[key]
+            number_of_edges.append(graph.out_degree[key])
+
+    print("average number of outgoing ratings", sum(number_of_edges) / len(number_of_edges))
+    print("quantity of nodes with just out edges:", i)
+    print("average rating of just in rated nodes:", avg_just_out / i)
+
+    print(sum_just_in, sum_just_out)
+
+    print(pd.DataFrame(just_out_nodes.values()).describe())
+    print(pd.DataFrame(just_in_nodes.values()).describe())
+
+    """
     in_degree_list_weight = list()
 
     for key, value in weighted_in_degree.items():
@@ -89,7 +133,7 @@ if __name__ == '__main__':
                                   avg_in = in_weight[i][2],
                                   avg_out = out_weight[i][2]))
 
-    # d -degree
+    # d -degreejup
     # in/out -in or out edge
     # wy / wn - weight yes, weight no(weight represents trust rating)
     # avg_in / avg_out - average of rate of received / given rates
@@ -100,13 +144,14 @@ if __name__ == '__main__':
 
     # print plots
 
-    print("\n", data_frame.describe(include='all'))
-    func.singular_boxplot(data_frame)
-    func.hist_each_numeric_var(data_frame)
-    # func.hist_categorical_var(sub_data, 'float64')
-    func.display_best_fit_var(data_frame)
-    func.fit_different_distributions(data_frame)
-    func.granularity(data_frame)
-    func.sparsity(data_frame)
-    func.correlation_analysis(data_frame)
+    # print("\n", data_frame.describe(include='all'))
+    # func.singular_boxplot(data_frame)
+    # func.hist_each_numeric_var(data_frame)
+    # # func.hist_categorical_var(sub_data, 'float64')
+    # func.display_best_fit_var(data_frame)
+    # func.fit_different_distributions(data_frame)
+    # func.granularity(data_frame)
+    # func.sparsity(data_frame)
+    # func.correlation_analysis(data_frame)
 
+"""
