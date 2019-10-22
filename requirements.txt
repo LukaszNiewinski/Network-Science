@@ -21,6 +21,7 @@ kiwisolver==1.1.0
 MarkupSafe==1.1.1
 matplotlib==3.1.1
 mistune==0.8.4
+mpmath==1.1.0
 nbconvert==5.6.0
 nbformat==4.4.0
 networkx==2.3
@@ -30,6 +31,7 @@ pandas==0.25.1
 pandocfilters==1.4.2
 parso==0.5.1
 pickleshare==0.7.5
+powerlaw==1.4.6
 prometheus-client==0.7.1
 prompt-toolkit==2.0.9
 Pygments==2.4.2
@@ -52,4 +54,3 @@ traitlets==4.3.2
 wcwidth==0.1.7
 webencodings==0.5.1
 widgetsnbextension==3.5.1
-powerlaw==1.4.6
